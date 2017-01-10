@@ -1,0 +1,14 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <script type="text/javascript" charset="utf-8"
+            src="http://fusion.qq.com/fusion_loader?appid='$!request.appid'&platform=website"></script>
+    <script type="text/javascript">
+        fusion2.dialog.relogin();
+    </script>
+</head>
+
+</html>
+

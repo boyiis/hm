@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="info" monitorInterval="1800">
+	<!--<properties>-->
+		<!--<property name="LOG_HOME">/data/logs/</property>-->
+	<!--</properties>-->
+	
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+      		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    	</Console>
+    	
+    	<RollingFile name="error_appender" fileName="/data/logs/gate.log" filePattern="/data/logs/gate-%d{yyyy-MM-dd}-%i.log.gz">
+    		<PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss} [%thread] %m%n"/>
+    		<SizeBasedTriggeringPolicy size="10 MB" />
+    	</RollingFile>
+    	
+	</appenders>
+	
+	<loggers>
+
+		<logger name="error_logger" level="info" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</logger>
+
+		<logger name="com.sz.game" level="info" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</logger>
+
+		<root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</root>
+	</loggers>
+
+</configuration>

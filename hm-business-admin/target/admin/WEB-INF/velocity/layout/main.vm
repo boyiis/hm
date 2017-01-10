@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>API页面</title>
+
+    <link href="#staticUrl('css/bootstrap.min.css')" rel="stylesheet">
+
+    $!custom_style
+
+</head>
+
+<body class="">
+
+    <div class="container">
+
+        <div class="row">
+            <ol class="breadcrumb">
+                #foreach($navMap in $pNav)
+                    #foreach($nav in $navMap.keySet())
+                        <li><a href="$navMap[$nav]">$nav</a></li>
+                    #end
+                #end
+                #if($!cNav)
+                    <li class="active">$!cNav</li>
+                #end
+
+            </ol>
+        </div>
+
+        $screen_content
+    </div>
+
+</body>
+
+<!-- Mainly scripts -->
+<script src="#staticUrl('js/jquery.min.js')"></script>
+<script src="#staticUrl('js/bootstrap.min.js')"></script>
+
+<script>
+</script>
+
+$!custom_js
+
+</body>
+
+</html>

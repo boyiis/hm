@@ -1,0 +1,205 @@
+#macro( message $message $messagetype )
+    #if($message)
+        #if(!$messagetype)#set($messagetype="success")#end
+    <div class="alert alert-$messagetype">
+        $message
+    </div>
+    #end
+#end
+#macro( springFormCheckboxesByList $path $options $optionValue $optionLabel $separator $attributes )
+    #springBind($path)
+    #foreach($option in $options)
+        #define($label)#evaluate("${esc.dollar}option.$optionLabel")#end
+        #define($value)#evaluate("${esc.dollar}option.$optionValue")#end
+    <label>
+    <input type="checkbox" name="${status.expression}" value="${value}"
+        #foreach($item in $status.actualValue)
+            #if($item==$value) checked="checked" #end
+        #end
+        ${attributes} #springCloseTag()
+        ${label}
+    </label>
+        ${separator}
+    #end
+<input type="hidden" name="_${status.expression}" value="on"/>
+#end
+
+#macro( exCheckboxes $name $options $optionValue $optionLabel $separator $attributes )
+    #foreach($option in $options)
+        #define($label)#evaluate("${esc.dollar}option.$optionLabel")#end
+        #define($value)#evaluate("${esc.dollar}option.$optionValue")#end
+    <label>
+        <input type="checkbox" name="$name" value="${value}" $!attributes>
+        $label
+    </label>
+        $!separator
+    #end
+<input type="hidden" name="_$name" value="on" class="">
+#end
+
+
+
+#macro( formGroupInput $path $name $required $inputClass $attr)
+    #springBind($path)
+
+<div class="form-group #if($status.isError())has-error#end">
+    <label class="col-md-3 control-label">$name #if($required)<span class="required"> * </span>#end</label>
+    <div class="col-md-4">
+        <input type="text" #if($required) required#end id="${status.expression}" name="${status.expression}" #if($status.value) value="$status.value" #end class="form-control input-circle $!inputClass" $!attr/>
+        #if($status.error)
+            <span class="help-block help-block-error">
+                $status.errorMessage
+            </span>
+        #end
+    </div>
+</div>
+#end
+
+#macro( formGroupSelectMultiple $path $name $required $inputClass $attr)
+    #springBind($path)
+
+<div class="form-group #if($status.isError())has-error#end">
+    <label class="col-md-3 control-label">$name #if($required)<span class="required"> * </span>#end</label>
+    <div class="col-md-4">
+        <select value="$!status.value" id="users" name="users" multiple #if($required) required#end id="${status.expression}" name="${status.expression}" class="form-control input-circle $!inputClass" $!attr ></select>
+        #if($status.error)
+            <span class="help-block help-block-error">
+                $status.errorMessage
+            </span>
+        #end
+    </div>
+</div>
+#end
+
+
+#macro( formGroupFormSingleSelect $path $name $options $optionValue $optionLabel $required $emptyLabel)
+    #springBind($path)
+<div class="form-group #if($status.isError())has-error#end">
+    <label class="col-md-3 control-label">$name #if($required)<span class="required"> * </span>#end</label>
+    <div class="col-md-4">
+        <select id="${status.expression}" name="${status.expression}" class="form-control">
+            #if(!$required)
+                <option value="">
+                    #if($emptyLabel)
+                        $emptyLabel
+                    #else
+                        请选择
+                    #end
+                </option>
+            #end
+            #foreach($option in $options)
+                #if($optionValue == '')
+                    #define($value)$option#end
+                #else
+                    #define($value)#evaluate("${esc.dollar}option.$optionValue")#end
+                #end
+                #define($label)#evaluate("${esc.dollar}option.$optionLabel")#end
+                <option value="${value}"
+                    #if("$!status.value" == "$value") selected="selected" #end>
+                    ${label}</option>
+            #end
+        </select>
+        #if($status.error)
+            <span class="help-block help-block-error">
+                $status.errorMessage
+            </span>
+        #end
+    </div>
+</div>
+#end
+
+#macro( reportTable $table)
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        #foreach($header in $table.headers)
+            #if($foreach.first)
+            <tr>
+                #if($table.showRowName)
+                    <th rowspan="$table.headerCount">$table.firstColumnName</th>
+                #end
+                <th>$header.name</th>
+                #foreach($headerItem in $header.items)
+                    <th colspan="$header.colSpan">$headerItem.name</th>
+                #end
+                <th rowspan="$table.headerCount">总计</th>
+            </tr>
+            #else
+            <tr>
+                <th>$header.name</th>
+                #foreach($headerItem in $header.items)
+                    <th colspan="$header.colSpan">$headerItem.name</th>
+                #end
+            </tr>
+            #end
+        #end
+    </thead>
+    <tbody>
+        #foreach($row in $table.rows)
+        <tr>
+            #if($table.showRowName)
+                <td>$row.matedata.name</td>
+            #end
+            <td>$!row.matedata.aggregateFunctionName</td>
+            #foreach($item in $row.items)
+                <td>$item.displayValue</td>
+            #end
+            <td>$row.total.displayValue</td>
+        </tr>
+        #end
+    </tbody>
+</table>
+#end
+
+## 根据相对路径 获取 静态资源的访问路径
+#macro( staticUrl $relateUrl)
+    #springUrl("/static/$relateUrl")
+#end
+
+## inspinia form 专用
+#macro( inspiniaSpringFormCheckboxes $path $options $attributes)
+    #springBind($path)
+    #foreach($option in $options.keySet())
+        <div class="i-checks"><label>
+        <input type="checkbox" name="${status.expression}" value="${option}"
+            #foreach($item in $status.actualValue)
+                #if($item==$option) checked="checked" #end
+            #end
+            ${attributes} #springCloseTag()
+            <i></i>${options.get($option)} $!separator
+        </label></div>
+    #end
+    <input type="hidden" name="_${status.expression}" value="on"/>
+#end
+
+#macro( inspiniaSpringFormRadioButtons $path $options $attributes)
+    #springBind($path)
+    #foreach($option in $options.keySet())
+    <div class="i-checks"><label>
+    <input type="radio" name="${status.expression}" value="${option}"
+        #if("$!status.value"=="$option") checked="checked" #end
+        ${attributes}
+        #springCloseTag()
+        ${options.get($option)} $!seperator
+    </label></div>
+    #end
+<input type="hidden" name="_${status.expression}" value="on"/>
+#end
+#macro( springFormInputFile $path $attributes )
+    #springBind($path)
+<input type="file" id="#springXmlId(${status.expression})" name="${status.expression}" ${attributes}#springCloseTag()
+#end
+
+
+## utils
+#macro( join $itemList $seperator)
+
+    #set ( $result = "")
+    #foreach( $item in $itemList)
+        #if( $foreach.hasNext)
+            #set ( $result = "$result$item$seperator" )
+        #else
+            #set ( $result = "$result$item" )
+        #end
+    #end
+    $result
+#end

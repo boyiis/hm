@@ -1,0 +1,46 @@
+##设置变量
+##页面模版
+#set( $layout = "/layout/main.vm")
+##导航
+#set( $pNav = [{"api": "#springUrl('')"}, {"standard": "#springUrl('')"}])
+##set( $cNav = "login")
+##临时变量
+#set( $sLogin = {"platform": "standard", "api": "login", "url": "#springUrl('/standard/login')"})
+#set( $sCharge = {"platform": "standard", "api": "charge", "url": "#springUrl('/standard/charge')"})
+#set( $sRole = {"platform": "standard", "api": "role", "url": "#springUrl('/standard/role')"})
+#set( $sRoles = {"platform": "standard", "api": "roles", "url": "#springUrl('/standard/roles')"})
+#set( $sFortbitTalk = {"platform": "standard", "api": "forbitTalk", "url": "#springUrl('/standard/forbit/talk')"})
+#set( $sForbitLogin = {"platform": "standard", "api": "forbitLogin", "url": "#springUrl('/standard/forbit/login')"})
+#set( $apiList = [ $sLogin, $sCharge, $sRole, $sRoles, $sFortbitTalk, $sForbitLogin ])
+
+
+<div class="row">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">API列表</div>
+
+        <!-- Table -->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>platform</td>
+                <td>api</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach( $item in $apiList)
+                <tr>
+                    <td>${velocityCount}</td>
+                    <td>$item.platform</td>
+                    <td>$item.api</td>
+                    <td><a href="$item.url" class="btn btn-primary btn-xs">调试</a></td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

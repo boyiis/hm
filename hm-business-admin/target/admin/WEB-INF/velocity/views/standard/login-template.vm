@@ -1,0 +1,164 @@
+#set( $projetName = "战神争霸")
+
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>$projetName</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        body{overflow:hidden;}
+        html,body{height:100%;color:#FFF;background-color:#000;overflow-y:hidden;}
+        #container{height: 100%;width:100%}
+    </style>
+
+    <script type="text/javascript">
+        var title="$projetName";
+        var url='$request.homeurl';
+        var unloadMsg='是否要退出$projetName?';
+
+        var domain = '$request.clientUrl';
+        if(domain){
+            var base=document.createElement("base");
+            var head=document.getElementsByTagName("head")[0];
+            base.href=domain;
+            head.appendChild(base);
+        }
+
+        var unflag=true;
+
+        var flashvars =
+        {
+            pay:escape('$!request.payurl'),
+            cm:escape('$!request.cmurl'),
+            uid:'$!request.userid',
+            pid:'$!request.platform',
+            t:'$!request.time',
+            sid:'$!request.serverid',
+            sport:'$!request.serverport',
+            ip:'$!request.serverip',
+            sign:'$!request.verify',
+            cminfo:'$!request.cminfo',
+            bbsUrl:escape('$!request.bbsurl'),
+            homeUrl:escape('$!request.homeurl'),
+            suggestUrl:escape('$!request.suggesturl'),
+            client:'$!request.client',
+            microClientUrl:escape('$!request.microclienturl'),
+            feedbackUrl:escape('$!request.feedbackurl'),
+            gmpanel:'$!request.gmpanel',
+            server:'$!request.server',
+            gameid:'$!request.gameid',
+            clientip:'$!request.ip',
+            exist:'$!request.exist',
+            logUrl:escape('$!request.logurl'),
+            domain:domain
+        };
+
+        var v;
+        if(flashvars.pid == "yy" && flashvars.client == "2")
+        {//YY游戏大厅
+            v = new Date().getTime().toString(36);
+        }
+        else
+        {
+            var date=new Date();
+            v=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+"."+date.getHours()+"."+Math.round(date.getMinutes()/10);
+        }
+        var swf=domain+"Main.swf?v="+v;
+
+        var params={
+            menu: "false",
+            scale: "noScale",
+            allowFullscreen: "true",
+            allowScriptAccess: "always",
+            wmode:"direct",
+            allowFullScreenInteractive:"true",
+            hasPriority:"true",
+            flashvars:getVars()
+        };
+
+        function changeUnflag()
+        {
+            unflag=false;
+        }
+
+        function getVars()
+        {
+            var r="";
+            for(var p in flashvars)r+=(p+"="+flashvars[p] + "&");
+            r=r.slice(0,r.length-1);
+            return r;
+        }
+
+        function getParams(e)
+        {
+            var r="";
+            var p;
+            if(e)
+            {
+                for(p in params)r+=' '+p+'="'+params[p]+'"';
+            }
+            else
+            {
+                for(p in params)r+='<param name="' + p + '" value="' + params[p] + '" />';
+            }
+
+            return r;
+        }
+
+        function loadGame()
+        {
+            var r='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%" id="Main">';
+            r+='<param name="movie" value="'+swf+'" />';
+            r+=getParams(0);
+            r+='<embed type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflash" ';
+            r+='src="'+swf+'" ';
+            r+='quality="high" ';
+            r+='width="100%" ';
+            r+='height="100%" ';
+            r+='name="Main" ';
+            r+=getParams(1);
+            r+=' />';
+            r+="</object>";
+            $("container").innerHTML=r;
+
+            return;
+        }
+
+        function $(i)
+        {
+            return document.getElementById(i);
+        }
+
+
+        function callSWFMethod(swfID,fun)
+        {
+            if(navigator.appName.indexOf("Microsoft") > -1) m = window[swfID];
+            else m = document[swfID];
+            try{return m[fun]();}catch(e){}
+
+            return null;
+        }
+
+        window.onbeforeunload=function(e)
+        {
+            if(unflag==false)return;
+
+            var s=callSWFMethod("Main","onUnload");
+            if(s) unloadMsg=s;
+            e = e || window.event;
+            if(e) e.returnValue = unloadMsg;
+
+            return unloadMsg;
+        }
+
+
+    </script>
+</head>
+
+<body onload="loadGame()">
+<div id="container">正在努力加载中...</div>
+<noscript>您禁用了浏览器js脚本运行了!</noscript>
+</body>
+
+</html>

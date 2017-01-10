@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<configuration status="info" monitorInterval="1800">
+	<!--<properties>-->
+		<!--<property name="LOG_HOME">/data/logs/</property>-->
+	<!--</properties>-->
+	
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+      		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    	</Console>
+    	<!-- 错误日志 -->
+    	<RollingFile name="error_appender" fileName="${LOG_HOME}/front.log" filePattern="${LOG_HOME}/front-%d{yyyy-MM-dd}-%i.log.gz">
+    		<PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss} [%thread] %m%n"/>
+    		<SizeBasedTriggeringPolicy size="10 MB" />
+    	</RollingFile>
+    	
+	</appenders>
+	
+	<loggers>
+
+		<logger name="error_logger" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</logger>
+
+		<logger name="com.sz.hm" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</logger>
+
+		<root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error_appender" />
+		</root>
+
+	</loggers>
+
+</configuration>

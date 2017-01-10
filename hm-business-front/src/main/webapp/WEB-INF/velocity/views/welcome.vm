@@ -1,0 +1,3 @@
+#set( $layout = "/layout/blank.vm")
+
+<h1>welcome</h1>

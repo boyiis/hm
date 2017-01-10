@@ -1,0 +1,126 @@
+#set( $layout = "/layout/main.vm")
+##导航
+#set( $pNav = [{"api": "#springUrl('')"}, {"standard": "#springUrl('')"}])
+#set( $cNav = "role")
+
+#define( $custom_js)
+<!-- Jquery Validate -->
+<script src="#staticUrl('js/plugins/validate/jquery.validate.min.js')"></script>
+<script src="#staticUrl('js/jquery.md5.js')"></script>
+<script>
+
+    $.fn.serializeObject = function() {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    function urlMd5(dataMap, keys){
+        var originSign = "";
+        for(var index in keys){
+            var key = keys[index];
+            var value = dataMap[key];
+            originSign += value;
+        }
+        var decryptedSign = $.md5(originSign);
+
+        return decryptedSign;
+    }
+
+    $("#form").validate({
+        submitHandler: function(form) {
+            var sign = urlMd5($("#form").serializeObject(),["pid", "sid", "uid", "t", "key"])
+            $("#sign").val(sign);
+
+            var queryString = $("#form").serialize();
+            //$("#result").html("queryString ======> " + queryString);
+            $.get("#springUrl('/standard/role_action')", $('#form').serialize(), function (data) {
+                $("#result").html(data);
+            });
+        }
+    });
+
+</script>
+#end
+
+
+<div class="row">
+    <div class="panel panel-info">
+
+        <div class="panel-heading">
+            登陆
+        </div>
+        <div class="panel-body">
+
+        </div>
+
+        <form id="form" class="form-horizontal" action="#" method="get">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">key</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="key"  placeholder="分配的key">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">pid</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="pid"  placeholder="平台编号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">sid</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="sid" placeholder="服务器编号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">uid</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="uid"  placeholder="用户编号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">时间戳</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="t"  placeholder="时间戳" value="$date.getSystemTime()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                </div>
+            </div>
+
+            <input type="hidden" name="sign" id="sign">
+        </form>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="panel panel-info">
+
+        <div class="panel-heading">
+            结果
+        </div>
+        <form>
+            <div class="form-group">
+                <textarea id="result" class="form-control" rows="3">$!result</textarea>
+            </div>
+        </form>
+
+
+    </div>
+</div>

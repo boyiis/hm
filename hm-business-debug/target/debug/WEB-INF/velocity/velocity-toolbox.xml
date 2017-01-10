@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbox>
+
+    <!--<tool>
+        <key>auth</key>
+        <scope>application</scope>
+        <class>com.xy.demos.adminweb.auth.AuthManager</class>
+    </tool>-->
+
+    <!--
+    <tool>
+        <key>app</key>
+        <scope>application</scope>
+        <class>com.ctrip.infosec.configs.utils.ApplicationTool</class>
+    </tool>
+    <tool>
+        <key>auth</key>
+        <scope>application</scope>
+        <class>com.ctrip.infosec.sars.sso.util.AuthUtils</class>
+    </tool>
+    <tool>
+        <key>math</key>
+        <scope>application</scope>
+        <class>org.apache.velocity.tools.generic.MathTool</class>
+    </tool>
+    <tool>
+        <key>number</key>
+        <scope>application</scope>
+        <class>org.apache.velocity.tools.generic.NumberTool</class>
+    </tool>
+    <tool>
+        <key>esc</key>
+        <scope>application</scope>
+        <class>org.apache.velocity.tools.generic.EscapeTool</class>
+    </tool>
+    -->
+    <tool>
+        <key>date</key>
+        <scope>application</scope>
+        <class>org.apache.velocity.tools.generic.DateTool</class>
+    </tool>
+
+    <tool>
+        <key>GlobalConfig</key>
+        <scope>application</scope>
+        <class>com.sz.game.common.util.GlobalConfig</class>
+    </tool>
+
+</toolbox>
