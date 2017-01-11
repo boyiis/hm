@@ -29,10 +29,10 @@ public class TraceUtils {
 		
 		trace.setCreateId(ADMIN_ACCOUNT_ID);
 		trace.setCreateTime(new Date(System.currentTimeMillis()));
-		trace.setCreator(ADMIN_ACCOUNT);
+		trace.setCreateName(ADMIN_ACCOUNT);
 		trace.setUpdateId(ADMIN_ACCOUNT_ID);
 		trace.setUpdateTime(new Date(System.currentTimeMillis()));
-		trace.setUpdator(ADMIN_ACCOUNT);
+		trace.setUpdateName(ADMIN_ACCOUNT);
 		
 	}
 	
@@ -50,10 +50,10 @@ public class TraceUtils {
 		
 		trace.setCreateId(UserUtils.getUser().getId());
 		trace.setCreateTime(new Date(System.currentTimeMillis()));
-		trace.setCreator(UserUtils.getUser().getMobilePhone());
+		trace.setCreateName(UserUtils.getUser().getMobilePhone());
 		trace.setUpdateId(UserUtils.getUser().getId());
 		trace.setUpdateTime(new Date(System.currentTimeMillis()));
-		trace.setUpdator(UserUtils.getUser().getMobilePhone());
+		trace.setUpdateName(UserUtils.getUser().getMobilePhone());
 		
 	}
 	
@@ -99,7 +99,7 @@ public class TraceUtils {
 		
 		trace.setUpdateId(UserUtils.getUser().getId());
 		trace.setUpdateTime(new Date(System.currentTimeMillis()));
-		trace.setUpdator(UserUtils.getUser().getMobilePhone());
+		trace.setUpdateName(UserUtils.getUser().getMobilePhone());
 		
 	}
 	

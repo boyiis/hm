@@ -12,9 +12,9 @@ public interface ITrace {
 
 	public abstract void setCreateTime(Date createTime);
 
-	public abstract String getCreator();
+	public abstract String getCreateName();
 
-	public abstract void setCreator(String creator);
+	public abstract void setCreateName(String createName);
 
 	public abstract boolean getDeleteFlag();
 
@@ -28,7 +28,7 @@ public interface ITrace {
 
 	public abstract void setUpdateTime(Date updateTime);
 
-	public abstract String getUpdator();
+	public abstract String getUpdateName();
 
-	public abstract void setUpdator(String updator);
+	public abstract void setUpdateName(String updateName);
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- status=debug 可以查看log4j的装配过程 -->
+<!-- status=debug 可以查看log4j的装配过�? -->
 <configuration status="info" monitorInterval="1800">
 	<!--<properties>-->
 		<!--<property name="LOG_HOME">/data/logs/</property>-->

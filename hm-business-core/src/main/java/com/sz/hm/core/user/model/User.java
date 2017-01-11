@@ -56,9 +56,9 @@ public class User implements Serializable,ITrace{
 	@JSONField(serialize=false)
 	private Date createTime;
 
-	@Column(name = "CREATOR", length = 100)
+	@Column(name = "CREATE_NAME", length = 100)
 	@JSONField(serialize=false)
-	private String creator;
+	private String createName;
 
 	@Column(name = "UPDATE_ID", length = 32)
 	@JSONField(serialize=false)
@@ -68,9 +68,9 @@ public class User implements Serializable,ITrace{
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
 
-	@Column(name = "UPDATOR", length = 100)
+	@Column(name = "UPDATE_NAME", length = 100)
 	@JSONField(serialize=false)
-	private String updator;
+	private String updateName;
 
 	@Column(name = "DELETE_FLAG")
 	@JSONField(serialize=false)
@@ -124,14 +124,6 @@ public class User implements Serializable,ITrace{
 		this.createTime = createTime;
 	}
 
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
 	public String getUpdateId() {
 		return updateId;
 	}
@@ -148,20 +140,28 @@ public class User implements Serializable,ITrace{
 		this.updateTime = updateTime;
 	}
 
-	public String getUpdator() {
-		return updator;
-	}
-
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-
 	public boolean getDeleteFlag() {
 		return deleteFlag;
 	}
 
 	public void setDeleteFlag(boolean deleteFlag) {
 		this.deleteFlag = deleteFlag;
+	}
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
+	}
+
+	public String getUpdateName() {
+		return updateName;
+	}
+
+	public void setUpdateName(String updateName) {
+		this.updateName = updateName;
 	}
 	
 	

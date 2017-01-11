@@ -18,19 +18,20 @@
 ">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.sz.game.gate"/>
-    <context:component-scan base-package="com.sz.game.ws.core.service.gate"/>
-    <context:component-scan base-package="com.sz.game.bundle.game"/>
+    <context:component-scan base-package="com.sz.hm"/>
 
     <context:property-placeholder location="classpath:config.properties" />
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!--globalCache-->
-    <bean class="com.sz.game.bundle.cache.global.GlobalCacheFactory" init-method="init">
+    <bean class="com.sz.hm.core.cache.redis.GlobalCacheFactory" init-method="init">
         <constructor-arg index="0" value="${global.redis.masterName}"></constructor-arg>
         <constructor-arg index="1" value="${global.redis.sentinels}"></constructor-arg>
         <constructor-arg index="2" value="${global.redis.database}"></constructor-arg>
     </bean>
+    
+        <!--datasource-->
+    <import resource="classpath*:/spring/dataSource.xml"></import>
 
 </beans>
