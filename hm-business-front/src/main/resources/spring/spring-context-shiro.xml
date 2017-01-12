@@ -11,20 +11,25 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login/check" />
-		<property name="successUrl" value="/login/check1" />
-		<property name="filters">
+		<!-- successUrl不配置的话  shiro认证通过会自动跳转到上一个请求路径  -->
+		<!-- <property name="successUrl" value="/login/check1" /> -->
+		<!-- 通过unauthorizedUrl指定没有权限操作时跳转页面 -->  
+        <!-- <property name="unauthorizedUrl" value="/refuse.jsp" />  -->
+<!-- 		<property name="filters">
             <map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
             </map>
-        </property>
+        </property> -->
 		<property name="filterChainDefinitions">
 			<value>
+			<!-- /** = anon所有url都可以匿名访问 -->  
 				/ws/** = anon
 				/static/** = anon
 				/userfiles/** = anon
-				${adminPath}/login = authc
-				${adminPath}/logout = logout
-				${adminPath}/** = user
+				login/check = anon
+				login/check1 = user
+				<!-- ${adminPath}/logout = logout
+				${adminPath}/** = user -->
 		 	</value>
 		</property>
 	</bean>
@@ -33,8 +38,12 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- <property name="sessionManager" ref="sessionManager" /> -->
 		<property name="realm" ref="systemAuthorizingRealm" />
-		<property name="cacheManager" ref="shiroCacheManager" />
+		<property name="cacheManager" ref="shiroCacheManager" /> 
 	</bean>
+	
+	   <bean id="systemAuthorizingRealm" class="com.sz.hm.core.security.shiro.SystemAuthorizingRealm">  
+        <property name="cacheManager" ref="shiroCacheManager" />  
+    </bean>
 	<!-- 
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
 	    <property name="globalSessionTimeout" value="3600000" /> 
@@ -47,9 +56,12 @@
 	</bean> -->
 	
 	<!-- 用户授权信息Cache, 采用EhCache -->
-	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+<!-- 	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManager" ref="cacheManager"/>
-	</bean>
+	</bean> -->
+	
+	    <!-- 用户授权信息Cache -->  
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />  
 	
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>

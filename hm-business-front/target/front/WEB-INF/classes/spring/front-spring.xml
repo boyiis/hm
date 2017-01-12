@@ -29,6 +29,7 @@
 
     <!--datasource-->
     <import resource="classpath*:/spring/dataSource.xml"></import>
+    <import resource="classpath*:/spring/spring-context-shiro.xml"></import>
 
 
 </beans>

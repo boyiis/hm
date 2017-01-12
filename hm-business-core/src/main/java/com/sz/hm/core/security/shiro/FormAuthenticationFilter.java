@@ -2,7 +2,7 @@
  * Copyright &copy; 2014-2015 <a href="https://github.com/mokylin/cabal">cabal</a> All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- */
+ *//*
 package com.sz.hm.core.security.shiro;
 
 import javax.servlet.ServletRequest;
@@ -12,11 +12,11 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
-/**
+*//**
  * 表单验证（包含验证码）过滤类
  * @author 稻草鸟人
  * @version 2014-5-19
- */
+ *//*
 @Service
 public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.FormAuthenticationFilter {
 
@@ -51,6 +51,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 	}
 
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+		System.out.println("拦截login");
 		String username = getUsername(request);
 		String password = getPassword(request);
 		if (password==null){
@@ -62,4 +63,4 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		return new UsernamePasswordToken(username, password.toCharArray(), rememberMe, host, captcha);
 	}
 
-}
+}*/

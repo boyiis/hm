@@ -2,14 +2,14 @@
  * Copyright &copy; 2014-2015 <a href="https://github.com/mokylin/cabal">cabal</a> All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- */
+ *//*
 package com.sz.hm.core.security.shiro;
 
-/**
+*//**
  * 用户和密码（包含验证码）令牌类
  * @author 稻草鸟人
  * @version 2014-5-19
- */
+ *//*
 public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswordToken {
 
 	private static final long serialVersionUID = 1L;
@@ -37,4 +37,4 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
 	public UsernamePasswordToken(String username,String password){
 		super(username,password);
 	}
-}
+}*/

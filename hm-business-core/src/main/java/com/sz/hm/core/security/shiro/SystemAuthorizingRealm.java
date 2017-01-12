@@ -2,61 +2,54 @@
  * Copyright &copy; 2014-2015 <a href="https://github.com/mokylin/cabal">cabal</a> All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- *//*
+ */
 package com.sz.hm.core.security.shiro;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mokylin.cabal.common.servlet.ValidateCodeServlet;
-import com.mokylin.cabal.common.utils.Encodes;
-import com.mokylin.cabal.common.utils.SpringContextHolder;
-import com.mokylin.cabal.modules.sys.entity.Menu;
-import com.mokylin.cabal.modules.sys.entity.User;
-import com.mokylin.cabal.modules.sys.service.SystemService;
-import com.mokylin.cabal.modules.sys.utils.UserUtils;
-import com.mokylin.cabal.modules.sys.web.LoginController;
+import com.sz.hm.core.base.util.Encodes;
+import com.sz.hm.core.user.model.User;
+import com.sz.hm.core.user.service.IUserService;
 
-*//**
+/**
  * 系统安全认证实现类
  * @author 稻草鸟人
  * @version 2014-5-29
- *//*
+ */
 @Service
-@DependsOn({"userDao","roleDao","menuDao"})
 public class SystemAuthorizingRealm extends AuthorizingRealm {
+	
+	@Autowired
+	private IUserService userService;
 
-	private SystemService systemService;
-
-	*//**
+	/**
 	 * 认证回调函数, 登录时调用
-	 *//*
+	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
+		System.out.println("登录验证");
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		
+/*		
 		if (LoginController.isValidateCodeLogin(token.getUsername(), false, false)){
 			// 判断验证码
 			Session session = SecurityUtils.getSubject().getSession();
@@ -64,29 +57,30 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)){
 				throw new CaptchaException("验证码错误.");
 			}
-		}
-
-		User user = getSystemService().getUserByLoginName(token.getUsername());
+		}*/
+		
+		User user = userService.findByMobilePhone(token.getUsername());
 		if (user != null) {
-			byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
-			return new SimpleAuthenticationInfo(new Principal(user), 
-					user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
+			//byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
+			return new SimpleAuthenticationInfo(user.getMobilePhone(), 
+					user.getPassword(), getName());
 		} else {
 			return null;
 		}
 	}
 
-	*//**
+	/**
 	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用
-	 *//*
+	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		Principal principal = (Principal) getAvailablePrincipal(principals);
-		User user = getSystemService().getUserByLoginName(principal.getLoginName());
+		String mobilePhone = (String) principals.fromRealm(getName()).iterator().next();
+		//Principal principal = (Principal) getAvailablePrincipal(principals);
+		User user = userService.findByMobilePhone(mobilePhone);
 		if (user != null) {
-			UserUtils.putCache("user", user);
+			//UserUtils.putCache("user", user);
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			List<Menu> list = UserUtils.getMenuList();
+			/*List list = 
 			for (Menu menu : list){
 				if (StringUtils.isNotBlank(menu.getPermission())){
 					// 添加基于Permission的权限信息
@@ -94,36 +88,36 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 						info.addStringPermission(permission);
 					}
 				}
-			}
+			}*/
 			// 更新登录IP和时间
-			getSystemService().updateUserLoginInfo(user.getId());
+			
 			return info;
 		} else {
 			return null;
 		}
 	}
 	
-	*//**
+	/**
 	 * 设定密码校验的Hash算法与迭代次数
 	 *//*
 	@PostConstruct
 	public void initCredentialsMatcher() {
-		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(SystemService.HASH_ALGORITHM);
-		matcher.setHashIterations(SystemService.HASH_INTERATIONS);
+		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher("SHA-1");
+		matcher.setHashIterations(1024);
 		setCredentialsMatcher(matcher);
 	}
-	
-	*//**
+	*/
+	/**
 	 * 清空用户关联权限认证，待下次使用时重新加载
-	 *//*
+	 */
 	public void clearCachedAuthorizationInfo(String principal) {
 		SimplePrincipalCollection principals = new SimplePrincipalCollection(principal, getName());
 		clearCachedAuthorizationInfo(principals);
 	}
 
-	*//**
+	/**
 	 * 清空所有关联认证
-	 *//*
+	 */
 	public void clearAllCachedAuthorizationInfo() {
 		Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
 		if (cache != null) {
@@ -133,17 +127,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 	}
 
-	*//**
-	 * 获取系统业务对象
-	 *//*
-	public SystemService getSystemService() {
-		if (systemService == null){
-			systemService = SpringContextHolder.getBean(SystemService.class);
-		}
-		return systemService;
-	}
+
 	
-	*//**
+	/**
 	 * 授权用户信息
 	 *//*
 	public static class Principal implements Serializable {
@@ -157,8 +143,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 		public Principal(User user) {
 			this.id = user.getId();
-			this.loginName = user.getLoginName();
-			this.name = user.getLoginName();
+			this.loginName = user.getMobilePhone();
+			this.name = user.getMobilePhone();
 		}
 
 		public String getId() {
@@ -180,6 +166,5 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			return cacheMap;
 		}
 
-	}
+	}*/
 }
-*/

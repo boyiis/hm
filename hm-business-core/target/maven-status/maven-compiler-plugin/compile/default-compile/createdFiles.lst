@@ -1,6 +1,7 @@
 com\sz\hm\core\user\model\User.class
 com\sz\hm\core\base\dao\BaseDAO$12.class
 com\sz\hm\core\base\dao\BaseDAO$9.class
+com\sz\hm\core\base\util\Exceptions.class
 com\sz\hm\core\cache\redis\GlobalEventSubcriber.class
 com\sz\hm\core\base\dao\BaseDAO$14.class
 com\sz\hm\core\cache\redis\SubScribeManager$1.class
@@ -13,11 +14,13 @@ com\sz\hm\core\login\service\ILoginService.class
 com\sz\hm\core\base\model\ResultJson.class
 com\sz\hm\core\login\service\impl\LoginService.class
 com\sz\hm\core\base\dao\BaseDAO$11.class
+com\sz\hm\core\user\service\impl\UserService.class
 com\sz\hm\core\base\dao\BaseDAO$1.class
 com\sz\hm\core\base\dao\BaseDAO$6.class
 com\sz\hm\core\base\dao\BaseDAO$3.class
 com\sz\hm\core\cache\redis\GlobalCache.class
 com\sz\hm\core\base\dao\BaseDAO.class
+com\sz\hm\core\security\shiro\SystemAuthorizingRealm.class
 com\sz\hm\core\base\model\ITrace.class
 com\sz\hm\core\base\dao\BaseDAO$13.class
 com\sz\hm\core\cache\redis\GlobalRedisKey.class
@@ -33,5 +36,7 @@ com\sz\hm\core\base\util\UserUtils.class
 com\sz\hm\core\cache\redis\SubScribeManager.class
 com\sz\hm\core\base\dao\BaseDAO$5.class
 com\sz\hm\core\base\service\CommonAppService.class
+com\sz\hm\core\user\service\IUserService.class
 com\sz\hm\core\base\dao\BaseDAO$2.class
+com\sz\hm\core\base\util\Encodes.class
 com\sz\hm\core\base\util\TraceUtils.class
